@@ -1,0 +1,8 @@
+#ifndef INSERTIONSORTMEMORIA_H_INCLUDED
+#define INSERTIONSORTMEMORIA_H_INCLUDED
+
+void insertion_sort_memoria(TFunc *v, int tam);
+
+
+
+#endif // INSERTIONSORTMEMORIA_H_INCLUDED

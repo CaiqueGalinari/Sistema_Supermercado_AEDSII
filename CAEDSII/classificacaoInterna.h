@@ -1,0 +1,8 @@
+#ifndef CLASSIFICACAOINTERNA_H_INCLUDED
+#define CLASSIFICACAOINTERNA_H_INCLUDED
+
+int classificacao_interna(FILE *arq, int M);
+
+
+
+#endif // CLASSIFICACAOINTERNA_H_INCLUDED

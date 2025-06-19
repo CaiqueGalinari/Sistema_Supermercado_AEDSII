@@ -1,0 +1,130 @@
+# depslib dependency file v1.0
+1749679259 source:c:\users\aluno\downloads\caedsii\buscasequencial.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<time.h>
+
+1749679653 
+
+1749679406 c:\users\aluno\downloads\caedsii\funcionario.h
+	<stdlib.h>
+	<stdio.h>
+
+1749680392 source:c:\users\aluno\downloads\caedsii\funcionario.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+
+1749679497 source:c:\users\aluno\downloads\caedsii\buscabinaria.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<math.h>
+	<time.h>
+
+1749680394 source:c:\users\aluno\downloads\caedsii\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"funcionario.h"
+	"buscaSequencial.h"
+	"buscaBinaria.h"
+	"insertionSort.h"
+
+1749680394 Sort.h"
+
+1749679264 c:\users\aluno\downloads\caedsii\funcionario.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+
+1749679259 c:\users\aluno\downloads\caedsii\buscasequencial.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<time.h>
+
+1749679497 c:\users\aluno\downloads\caedsii\buscabinaria.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<math.h>
+	<time.h>
+
+1749679653 source:c:\users\aluno\downloads\caedsii\insertionsort.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+
+1749679373 c:\users\aluno\downloads\caedsii\buscasequencial.h
+
+1749679892 c:\users\aluno\downloads\caedsii\buscabinaria.h
+
+1749682935 c:\users\aluno\downloads\caedsii\insertionsort.h
+
+1749679497 source:/home/aluno/Downloads/CAEDSII/buscaBinaria.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<math.h>
+	<time.h>
+
+1750293611 /home/aluno/Downloads/CAEDSII/funcionario.h
+	<stdlib.h>
+	<stdio.h>
+
+1749679259 source:/home/aluno/Downloads/CAEDSII/buscaSequencial.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<time.h>
+
+1750293004 source:/home/aluno/Downloads/CAEDSII/classificacaoInterna.c
+	"funcionario.h"
+	"classificacaoInterna.h"
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+
+1750292946 /home/aluno/Downloads/CAEDSII/classificacaoInterna.h
+
+1750294933 source:/home/aluno/Downloads/CAEDSII/main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"funcionario.h"
+	"buscaSequencial.h"
+	"buscaBinaria.h"
+	"insertionSort.h"
+	"classificacaoInterna.h"
+
+1749679373 /home/aluno/Downloads/CAEDSII/buscaSequencial.h
+
+1749679892 /home/aluno/Downloads/CAEDSII/buscaBinaria.h
+
+1749682935 /home/aluno/Downloads/CAEDSII/insertionSort.h
+
+1750293613 source:/home/aluno/Downloads/CAEDSII/funcionario.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+
+1750294548 source:/home/aluno/Downloads/CAEDSII/insertionSort.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<time.h>
+
