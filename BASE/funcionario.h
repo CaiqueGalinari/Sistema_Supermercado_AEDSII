@@ -61,4 +61,4 @@ int compara(TFunc *c1, TFunc *c2);
 
 
 
-#endif // FUNCIONARIO_H_INCLUDED
+#endif
