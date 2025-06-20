@@ -12,8 +12,29 @@ TCaixa *caixa(int id, TListaprod *lista, int num_produtos) {
     return caixaR;
 }
 
-void salva(TCaixa *caixa, FILE *out) {
+void salvaCaixa(TCaixa *caixa, FILE *out) {
     fwrite(&caixa->id, sizeof(int), 1, out);
     fwrite(&caixa->num_produtos, sizeof(int), 1, out);
     fwrite(caixa->lista, sizeof(TListaprod), caixa->num_produtos, out);
+}
+
+void imprimeCaixa(TCaixa *caixa) {
+    printf("\n**********************************************");
+    printf("\nCaixa número ");
+    printf("%d", caixa->id);
+    printf("\nValor arrecadado: ");
+    printf("%f", caixa->lista->valortotal);
+    printf("\n**********************************************");
+}
+
+//Precisa adicionar o leCaixa
+void imprimirBaseCaixa(FILE *out){
+printf("\nImprimindo a base de dados de caixas...\n");
+    rewind(out);
+    TCaixa *c;
+
+    while ((c = leCaixa(out)) != NULL)
+        imprimeFornec(c);
+
+    free(c);
 }

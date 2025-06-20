@@ -23,7 +23,7 @@ void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FI
         sprintf(cnpj, "%02d.%03d.%03d/0001-%02d", rand() % 99 + 1, rand() % 1000, rand() % 1000, rand() % 100);
         sprintf(tel, "319%08d", rand() % 100000000);
         TFornecedor *f = fornecedor(i + 1, nome, cnpj, tel);
-        salva(f, out_fornecedores);
+        salvaFornec(f, out_fornecedores);
         free(f);
     }
     printf("Base de Fornecedores gerada com sucesso!\n");
@@ -43,7 +43,7 @@ void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FI
         int id_fornecedor_aleatorio = (rand() % num_fornecedores) + 1;
         
         TProduto *p = produto(i + 1, nome, desc, preco_aleatorio, estoque_aleatorio, id_fornecedor_aleatorio);
-        salva(p, out_produtos);
+        salvaProd(p, out_produtos);
         produtos_em_memoria[i] = p;
     }
     printf("Base de Produtos gerada com sucesso!\n");
@@ -69,7 +69,7 @@ void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FI
             lista[j].valortotal = lista[j].produto.preco * lista[j].qtdvend;
         }
         TCaixa *c = caixa(i + 1, lista, num_produtos_vendidos);
-        salva(c, out_caixas);
+        salvaCaixa(c, out_caixas);
         free(lista);
         free(c);
     }

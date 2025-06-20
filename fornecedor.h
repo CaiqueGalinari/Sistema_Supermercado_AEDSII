@@ -13,6 +13,12 @@ typedef struct fornecedor{
 
 TFornecedor *fornecedor(int id, char *nome, char *cnpj, char *telefone);
 
-void salva(TFornecedor *fornecedor, FILE *out);
+TFornecedor *leFornec(FILE *in);
+
+void salvaFornec(TFornecedor *fornecedor, FILE *out);
+
+void imprimeFornec(TFornecedor *fornecedor);
+
+void imprimirBaseFornec(FILE *out);
 
 #endif

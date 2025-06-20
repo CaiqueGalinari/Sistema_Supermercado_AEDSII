@@ -135,7 +135,7 @@ void shuffle(int *vet,int MAX,int MIN) {
 
 void imprimirBase(FILE *out){
 
-printf("\Imprimindo a base de dados...\n");
+printf("\nImprimindo a base de dados...\n");
 
     rewind(out);
     TFunc *f;
