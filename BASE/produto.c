@@ -21,17 +21,33 @@ void salvaProd(TProduto *prod, FILE *out) {
 
 void imprimeProd(TProduto *produto) {
     printf("\n**********************************************");
-    printf("\nProduto de cÃ³digo: ");
+    printf("\nProduto de código: ");
     printf("%d", produto->id);
     printf("\nNome: ");
     printf("%s", produto->nome);
-    printf("\nDescriÃ§Ã£o: ");
+    printf("\nDescrição: ");
     printf("%s", produto->descricao);
-    printf("\nPreÃ§o unitÃ¡rio: ");
+    printf("\nPreço unitário: ");
     printf("R$%.2lf", produto->preco);
-    printf("\nFornecedor de cÃ³digo: ");
+    printf("\nFornecedor de código: ");
     printf("%d", produto->idFornecedor);
     printf("\n**********************************************");
+}
+
+// Le um fornecedor do arquivo in na posicao atual do cursor
+// Retorna um ponteiro para funcionario lido do arquivo
+TProduto *leProd(FILE *in) {
+    TProduto *prod = (TProduto *) malloc(sizeof(TProduto));
+    if (0 >= fread(&prod->id, sizeof(int), 1, in)) {
+        free(prod);
+        return NULL;
+    }
+    fread(prod->nome, sizeof(char), sizeof(prod->nome), in);
+    fread(prod->descricao, sizeof(char), sizeof(prod->descricao), in);
+    fread(&prod->preco, sizeof(float), 1, in);
+    fread(&prod->estoque, sizeof(int), 1, in);
+    fread(&prod->idFornecedor, sizeof(int), 1, in);
+    return prod;
 }
 
 //Precisa adicionar o leProd

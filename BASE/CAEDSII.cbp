@@ -31,29 +31,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="buscaBinaria.c">
+		<Unit filename="caixa.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="buscaBinaria.h" />
-		<Unit filename="buscaSequencial.c">
+		<Unit filename="caixa.h" />
+		<Unit filename="fornecedor.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="buscaSequencial.h" />
-		<Unit filename="classificacaoInterna.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="classificacaoInterna.h" />
-		<Unit filename="funcionario.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="funcionario.h" />
-		<Unit filename="insertionSort.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="insertionSort.h" />
+		<Unit filename="fornecedor.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="mercado.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mercado.h" />
+		<Unit filename="produto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="produto.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

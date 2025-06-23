@@ -19,11 +19,12 @@ typedef struct caixa{
 
 TCaixa *caixa(int id, TListaprod *lista, int num_produtos);
 
+TCaixa *leCaixa(FILE *in);
+
 void salvaCaixa(TCaixa *caixa, FILE *out);
 
 void imprimeCaixa(TCaixa *caixa);
 
-//Precisa adicionar o leCaixa
 void imprimirBaseCaixa(FILE *out);
 
 #endif

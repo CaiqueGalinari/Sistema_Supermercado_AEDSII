@@ -15,6 +15,8 @@ typedef struct produto{
 
 TProduto *produto(int id, char *nome, char *descricao, float preco, int estoque, int idFornecedor);
 
+TProduto *leProd(FILE *in);
+
 void salvaProd(TProduto *produto, FILE *out);
 
 void imprimeProd(TProduto *produto);

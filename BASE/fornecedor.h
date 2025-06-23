@@ -7,8 +7,8 @@
 typedef struct fornecedor{
     int id;
     char nome[100];
-    char cnpj[15];
-    char telefone[12];
+    char cnpj[20];
+    char telefone[15];
 }TFornecedor;
 
 TFornecedor *fornecedor(int id, char *nome, char *cnpj, char *telefone);

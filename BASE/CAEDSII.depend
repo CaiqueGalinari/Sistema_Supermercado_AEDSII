@@ -128,3 +128,70 @@
 	<stdarg.h>
 	<time.h>
 
+1750378881 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\buscabinaria.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<math.h>
+	<time.h>
+
+1750378881 c:\users\caique\documents\github\sistema_supermercado_aedsii\base\funcionario.h
+	<stdlib.h>
+	<stdio.h>
+
+1750378881 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\buscasequencial.c
+	"funcionario.h"
+	<string.h>
+	<stdlib.h>
+	<stdarg.h>
+	<time.h>
+
+1750515505 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\caixa.c
+	"caixa.h"
+	<string.h>
+
+1750506649 c:\users\caique\documents\github\sistema_supermercado_aedsii\base\caixa.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"produto.h"
+
+1750506649 c:\users\caique\documents\github\sistema_supermercado_aedsii\base\produto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1750515505 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\fornecedor.c
+	"fornecedor.h"
+	<string.h>
+
+1750516422 c:\users\caique\documents\github\sistema_supermercado_aedsii\base\fornecedor.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1750515771 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\main.c
+	<stdio.h>
+	<stdlib.h>
+	"mercado.h"
+	"fornecedor.h"
+	"produto.h"
+	"caixa.h"
+
+1750506649 c:\users\caique\documents\github\sistema_supermercado_aedsii\base\mercado.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fornecedor.h"
+	"produto.h"
+	"caixa.h"
+
+1750506649 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\mercado.c
+	"mercado.h"
+	<time.h>
+
+1750506649 source:c:\users\caique\documents\github\sistema_supermercado_aedsii\base\produto.c
+	"produto.h"
+	<string.h>
+
