@@ -14,8 +14,11 @@ TCaixa *caixa(int id, TListaprod *lista, int num_produtos) {
 
 TCaixa *leCaixa(FILE *in) {
     TCaixa *caixa = (TCaixa *) malloc(sizeof(TCaixa));
+    if (fread(&caixa->id, sizeof(int), 1, in) != 1) {
+        free(caixa);
+        return NULL;
+    }
 
-    fread(&caixa->id, sizeof(int), 1, in);
     fread(&caixa->num_produtos, sizeof(int), 1, in);
     if (caixa->num_produtos > 0) {
         caixa->lista = (TListaprod *) malloc(sizeof(TListaprod) * caixa->num_produtos);
@@ -34,10 +37,18 @@ void salvaCaixa(TCaixa *caixa, FILE *out) {
 
 void imprimeCaixa(TCaixa *caixa) {
     printf("\n**********************************************");
-    printf("\nCaixa número ");
+    printf("\nCaixa número: ");
     printf("%d", caixa->id);
+
+    float valor_total_caixa = 0;
+    if (caixa->num_produtos > 0 && caixa->lista != NULL) {
+        for (int i = 0; i < caixa->num_produtos; i++) {
+            valor_total_caixa += caixa->lista[i].valortotal;
+        }
+    }
+
     printf("\nValor arrecadado: ");
-    printf("%f", caixa->lista->valortotal);
+    printf("R$%.2f", valor_total_caixa);
     printf("\n**********************************************");
 }
 

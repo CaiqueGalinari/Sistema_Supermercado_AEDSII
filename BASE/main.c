@@ -18,7 +18,7 @@ int main() {
     }
 
     // Cria as bases de dados
-    criarBaseMercado(20, 50, 5, forn, prod, caix);
+    criarBaseMercado(4, 10, 5, forn, prod, caix);
 
     // Imprime as bases de dados para verificação
     imprimirBaseFornec(forn);
