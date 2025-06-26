@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "fornecedor.h"
 
 typedef struct produto{
     int id;
@@ -21,7 +22,8 @@ void salvaProd(TProduto *produto, FILE *out);
 
 void imprimeProd(TProduto *produto);
 
-//Precisa adicionar o leProd
 void imprimirBaseProd(FILE *out);
+
+void cadastrarProduto(FILE *out_produtos, FILE *in_fornecedores);
 
 #endif

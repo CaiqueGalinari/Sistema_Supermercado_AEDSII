@@ -21,4 +21,6 @@ void imprimeFornec(TFornecedor *fornecedor);
 
 void imprimirBaseFornec(FILE *out);
 
+void cadastrarFornecedor(FILE *out);
+
 #endif

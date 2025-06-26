@@ -53,3 +53,46 @@ printf("\nImprimindo a base de dados de fornecedores...\n");
     }
     free(f);
 }
+
+//Vai ser o mesmo do cadastrar produto, praticamente
+void cadastrarFornecedor(FILE *out) {
+    char nome[100], cnpj[20], telefone[15];
+    int temp_char;
+
+    // Gera o id (mesma coisa do prod)
+    int novo_id = 1;
+    TFornecedor *f_temp;
+    rewind(out); // Começa no começo
+    while ((f_temp = leFornec(out)) != NULL) {
+        if (f_temp->id >= novo_id) {
+            novo_id = f_temp->id + 1;
+        }
+        free(f_temp); // Libera a memória alocada por le fornec
+    }
+
+    printf("\n### CADASTRO DE NOVO FORNECEDOR ###\n");
+    printf("O ID do novo fornecedor será: %d\n", novo_id);
+
+    // Pega os dados do fornecedor
+    printf("Digite o nome do fornecedor: ");
+    // Limpa o buffer
+    int c;
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = 0;
+
+    printf("Digite o CNPJ do fornecedor: ");
+    fgets(cnpj, sizeof(cnpj), stdin);
+    cnpj[strcspn(cnpj, "\n")] = 0;
+
+    printf("Digite o telefone do fornecedor: ");
+    fgets(telefone, sizeof(telefone), stdin);
+    telefone[strcspn(telefone, "\n")] = 0;
+
+    // Salva no arquivo
+    TFornecedor *f = fornecedor(novo_id, nome, cnpj, telefone);
+    fseek(out, 0, SEEK_END); // Cursor no final
+    salvaFornec(f, out);
+    free(f);
+
+    printf("\nFornecedor '%s' cadastrado com sucesso!\n", nome);
+}
