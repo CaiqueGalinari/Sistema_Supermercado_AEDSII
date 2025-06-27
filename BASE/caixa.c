@@ -25,7 +25,7 @@ void salvaCaixa(TCaixa *caixa, FILE *out) {
 
 void imprimeCaixa(TCaixa *caixa) {
     printf("\n**********************************************");
-    printf("\nCaixa nÃºmero: ");
+    printf("\nCaixa número: ");
     printf("%d", caixa->id);
     printf("\nValor arrecadado: ");
     printf("R$%.2f", caixa->valor_arrecadado);

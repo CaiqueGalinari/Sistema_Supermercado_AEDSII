@@ -7,38 +7,41 @@
 
 
 int main() {
-    //-----------  Abre os arquivos em modo "wb+". TROQUE PARA "rb+" SE J√Å TIVER CRIADO A BASE (base criada por padr√£o) -----------
+    //-----------  Abre os arquivos em modo "wb+". TROQUE PARA "rb+" SE J¡ TIVER CRIADO A BASE (base criada por padr„o) -----------
     FILE *forn = fopen("fornecedores.dat", "wb+");
     FILE *prod = fopen("produtos.dat", "wb+");
     FILE *caix = fopen("caixas.dat", "wb+");
     FILE *log = fopen("log.txt", "w+");
-    
+
+
     if (forn == NULL || prod == NULL || caix == NULL) {
         printf("Erro ao abrir os arquivos \n");
         return 1;
     }
     int menu = 0, escolha = 0, escolha2 = 0 ;
-    //-----------  Cria as bases de dados (caso v√° utilizar, se lembre de mudar a leitura para wb+)  -----------
+    //-----------  Cria as bases de dados (caso v· utilizar, se lembre de mudar a leitura para wb+)  -----------
     criarBaseMercado(200, 5000, 60, forn, prod, caix);
-    //                ^^^^^^^^^^^^^^^^ > Tamanho padr√£o da base
+    //                ^^^^^^^^^^^^^^^^ > Tamanho padr„o da base
 
     do{
     //------- menu ---------
-    printf("******************************\n");
+    printf("\n******************************\n");
     printf("O que voce deseja fazer?\n");
     printf("1 - Imprimir fornecedores\n");
     printf("2 - Imprimir produtos\n");
     printf("3 - Imprimir Caixas\n");
-    printf("4 - Ordenar dados (isto √© necessario para outras opera√ßoes)\n");
-    printf("5 - Procurar fornecedor por ID\n");
-    printf("6 - Procurar produto por ID\n");
-    printf("7 - Procurar caixa por ID\n");
-    printf("8 - Cadastrar fornecedor\n");
-    printf("9 - Cadastrar produto\n");
-    printf("10 - Adicionar caixas\n");
-    printf("11 - Vender \n");
-    printf("12 - Atualizar dados de um produto\n");
-    printf("13 - Conferir Estoque\n");
+    printf("4 - Ordenar fornecedores (isto e necessario outras operacoes)\n");
+    printf("5 - Ordenar produtos (isto e necessario outras operacoes)\n");
+    printf("6 - Ordenar caixa\n");
+    printf("7 - Procurar fornecedor por ID\n");
+    printf("8 - Procurar produto por ID\n");
+    printf("9 - Procurar caixa por ID\n");
+    printf("10 - Cadastrar fornecedor\n");
+    printf("11 - Cadastrar produto\n");
+    printf("12 - Adicionar caixas\n");
+    printf("13 - Vender \n");
+    printf("14 - Atualizar dados de um produto\n");
+    printf("15 - Conferir estoque baixo\n");
     printf("0 - sair\n");
     scanf("%d",&menu);
 
@@ -54,49 +57,54 @@ int main() {
             imprimirBaseCaixa(caix);
         break;
         case 4:
-        //------- ordena --------
             quicksortFornec(forn, 200, log);
-            quicksortProd(prod, 5000, log);
-            quicksortCaix(caix, 60, log);
-            printf("Dados ordenados\n");
+            printf("Fornecedores ordenados\n");
         break;
         case 5:
+            quicksortProd(prod, 5000, log);
+            printf("Produtos ordenados\n");
+        break;
+        case 6:
+            quicksortCaix(prod, 60, log);
+            printf("Caixas ordenados\n");
+        break;
+        case 7:
             printf("Qual o ID do fornecedor desejado?\n");
             scanf("%d",&escolha);
             consultarFornecedorPorId(forn, escolha, log);
         break;
-        case 6:
+        case 8:
             printf("Qual o ID do produto desejado?\n");
             scanf("%d",&escolha);
            consultarProdutoPorId(prod, escolha, log);
         break;
-        case 7:
+        case 9:
             printf("Qual o ID do caixa desejado?\n");
             scanf("%d",&escolha);
             consultarCaixaPorId(caix, escolha, log);
         break;
-        case 8:
+        case 10:
             cadastrarFornecedor(forn);
         break;
-        case 9:
+        case 11:
             cadastrarProduto(prod, forn);
         break;
-        case 10:
+        case 12:
             printf("Quantos caixas a serem adionados\n");
             scanf("%d",&escolha);
             adicionarCaixas(caix,escolha);
         break;
-        case 11:
+        case 13:
             printf("Qual o ID do caixa que fez a venda?\n");
             scanf("%d",&escolha);
             printf("Qual o ID do produto vendido?\n");
             scanf("%d",&escolha2);
-            Vender(30, 500, caix, prod, log);
+            Vender(escolha, escolha2, caix, prod, log);
         break;
-        case 12:
+        case 14:
             atualizarProduto(prod, forn, log);
         break;
-        case 13:
+        case 15:
             imprimirEstoqueBaixo(prod, 5, log);
         break;
         default:

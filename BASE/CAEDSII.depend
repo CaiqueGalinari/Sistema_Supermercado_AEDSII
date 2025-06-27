@@ -206,3 +206,62 @@
 1750987992 c:\users\caique\documents\github\sistema_supermercado_aedsii\base\metricas.h
 	<time.h>
 
+1751045093 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\caixa.c
+	"caixa.h"
+	<string.h>
+
+1751045053 c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\caixa.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"produto.h"
+	"metricas.h"
+
+1751033373 c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\produto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fornecedor.h"
+	"metricas.h"
+
+1751033373 c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\fornecedor.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"metricas.h"
+
+1751033373 c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\metricas.h
+	<time.h>
+
+1751033373 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\fornecedor.c
+	"fornecedor.h"
+	<string.h>
+	<time.h>
+
+1751066759 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\mercado.c
+	"mercado.h"
+	<time.h>
+	<math.h>
+	<unistd.h>
+
+1751033373 c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\mercado.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fornecedor.h"
+	"produto.h"
+	"caixa.h"
+
+1751033373 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\produto.c
+	"produto.h"
+	<string.h>
+	<time.h>
+
+1751067323 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\base\main.c
+	<stdio.h>
+	<stdlib.h>
+	"mercado.h"
+	"fornecedor.h"
+	"produto.h"
+	"caixa.h"
+

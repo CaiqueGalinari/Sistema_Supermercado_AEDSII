@@ -111,7 +111,7 @@ TFornecedor *buscaBinariaFornecedor(int chave, FILE *in, int inicio, int fim, lo
         if (!f) break;
         cod = f->id;
         if (cod == chave) {
-            fprintf(log, "\n-- Busca BinÃ¡ria Fornecedor (ID: %d) --", chave);
+            fprintf(log, "\n-- Busca Binária Fornecedor (ID: %d) --", chave);
             fprintf(log, "\nComparacoes: %d", cont);
             fimT = clock();
             total = (double)(fimT - inicioT) / CLOCKS_PER_SEC;
@@ -141,7 +141,7 @@ TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *po
         if (!p) break;
         cod = p->id;
         if (cod == chave) {
-            fprintf(log, "\n-- Busca BinÃ¡ria Produto (ID: %d) --", chave);
+            fprintf(log, "\n-- Busca Binária Produto (ID: %d) --", chave);
             fprintf(log, "\nComparacoes: %d", cont);
             fimT = clock();
             total = (double)(fimT - inicioT) / CLOCKS_PER_SEC;
@@ -259,12 +259,13 @@ void consultarCaixaPorId(FILE *arq_caixas, int id, FILE *log) {
         free(c);
     } else {
         fprintf(log, "\nConsulta: Caixa com ID %d nao encontrado.\n", id);
+        printf("\nErro durante a operaçao acesse o log para mais informaçoes\n");
     }
 }
 
 void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
     int id_produto;
-    printf("\n### ATUALIZAÃ‡ÃƒO DE PRODUTO ###\n");
+    printf("\n### ATUALIZAÇÃO DE PRODUTO ###\n");
     printf("Digite o ID do produto que deseja atualizar: ");
     scanf("%d", &id_produto);
     while (getchar() != '\n'); // Limpa o buffer do teclado
@@ -276,7 +277,7 @@ void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
     TProduto *p = buscaBinariaProduto(id_produto, arq_produtos, 1, num_produtos_total, &pos_produto, log);
 
     if (p == NULL) {
-        printf("ERRO: Produto com ID %d nÃ£o encontrado.\n", id_produto);
+        printf("ERRO: Produto com ID %d não encontrado.\n", id_produto);
         return;
     }
 
@@ -289,11 +290,11 @@ void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
     fgets(p->nome, sizeof(p->nome), stdin);
     p->nome[strcspn(p->nome, "\n")] = 0;
 
-    printf("Nova DescriÃ§Ã£o: ");
+    printf("Nova Descrição: ");
     fgets(p->descricao, sizeof(p->descricao), stdin);
     p->descricao[strcspn(p->descricao, "\n")] = 0;
 
-    printf("Novo PreÃ§o: ");
+    printf("Novo Preço: ");
     scanf("%f", &p->preco);
 
     printf("Novo Estoque: ");
@@ -317,7 +318,7 @@ void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
             free(fornec_temp);
         }
         if (!fornecedor_valido) {
-            printf("ERRO: ID de fornecedor invÃ¡lido. Tente novamente.\n");
+            printf("ERRO: ID de fornecedor inválido. Tente novamente.\n");
         }
     }
 
@@ -330,7 +331,7 @@ void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
 }
 
 void imprimirEstoqueBaixo(FILE *arquivo_produtos, int limite, FILE *log) {
-    printf("\n--- RELATÃ“RIO DE PRODUTOS COM ESTOQUE BAIXO (Abaixo de %d) ---\n", limite);
+    printf("\n--- RELATÓRIO DE PRODUTOS COM ESTOQUE BAIXO (Abaixo de %d) ---\n", limite);
     fprintf(log, "\n--- Relatorio de Estoque Baixo (Limite: %d) ---\n", limite);
 
     rewind(arquivo_produtos);
@@ -354,7 +355,7 @@ void imprimirEstoqueBaixo(FILE *arquivo_produtos, int limite, FILE *log) {
         fprintf(log, "Total de produtos com estoque baixo: %d\n", produtos_encontrados);
     }
 
-    printf("--- FIM DO RELATÃ“RIO ---\n");
+    printf("--- FIM DO RELATÓRIO ---\n");
     fprintf(log, "--- Fim do Relatorio ---\n\n");
     fflush(log);
 }
