@@ -7,7 +7,7 @@
 
 
 int main() {
-    //-----------  Abre os arquivos em modo "wb+". TROQUE PARA "rb+" SE JÁ TIVER CRIADO A BASE (base criada por padrão) -----------
+    //-----------  Abre os arquivos em modo "wb+". TROQUE PARA "rb+" SE JÃ TIVER CRIADO A BASE (base criada por padrÃ£o) -----------
     FILE *forn = fopen("fornecedores.dat", "wb+");
     FILE *prod = fopen("produtos.dat", "wb+");
     FILE *caix = fopen("caixas.dat", "wb+");
@@ -18,13 +18,21 @@ int main() {
         return 1;
     }
 
-    //-----------  Cria as bases de dados (caso vá utilizar, se lembre de mudar a leitura para wb+)  -----------
+    //-----------  Cria as bases de dados (caso vÃ¡ utilizar, se lembre de mudar a leitura para wb+)  -----------
     criarBaseMercado(200, 5000, 60, forn, prod, caix);
-    //                ^^^^^^^^^^^^^^^^ > Tamanho padrão da base
-    //quicksortFornec(forn, 200, log);
-    //quicksortProd(prod, 5000, log);
+    //                ^^^^^^^^^^^^^^^^ > Tamanho padrÃ£o da base
 
-    //-----------  Imprime especifico (falta implementar)  -----------
+    //------- mostra q esta desodernado --------
+    //imprimirBaseFornec(forn);
+    //imprimirBaseProd(prod);
+    //imprimirBaseCaixa(caix);
+
+    //------- ordena --------
+    quicksortFornec(forn, 200, log);
+    quicksortProd(prod, 5000, log);
+    quicksortCaix(caix, 60, log);
+
+    //-----------  Imprime especifico   -----------
     //consultarFornecedorPorId(forn, 100, log);
     //consultarProdutoPorId(prod, 500, log);
     //consultarCaixaPorId(caix, 30, log);
@@ -37,9 +45,9 @@ int main() {
     //-----------  Cadastra  -----------
     //cadastrarFornecedor(forn);
     //cadastrarProduto(prod, forn);
-    //adicionarCaixas(3, caix);
+    //adicionarCaixas(caix,3);
 
-    //-----------  Operações  -----------
+    //-----------  OperaÃ§Ãµes  -----------
     //LEMBRE DE DESCOMENTAR O "quicksortProd"
     //Vender(30, 500, caix, prod, log);
     //atualizarProduto(prod, forn, log);
@@ -50,7 +58,7 @@ int main() {
     //imprimirBaseProd(prod);
     //imprimirBaseCaixa(caix);
 
-    //-----------  Imprime especifico (falta implementar) -----------
+    //-----------  Imprime especifico  -----------
     //consultarFornecedorPorId(forn, 100, log);
     //consultarProdutoPorId(prod, 500, log);
     //consultarCaixaPorId(caix, 30, log);
