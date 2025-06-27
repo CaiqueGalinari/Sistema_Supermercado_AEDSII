@@ -19,4 +19,8 @@ void salvaCaixa(TCaixa *caixa, FILE *out);
 void imprimeCaixa(TCaixa *caixa);
 void imprimirBaseCaixa(FILE *out);
 
+void quicksortCaix(FILE *arq, int tam, FILE *log);
+
+
+
 #endif
