@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "fornecedor.h"
+#include "metricas.h"
 
 typedef struct produto{
     int id;
@@ -17,13 +18,13 @@ typedef struct produto{
 TProduto *produto(int id, char *nome, char *descricao, float preco, int estoque, int idFornecedor);
 
 TProduto *leProd(FILE *in);
-
 void salvaProd(TProduto *produto, FILE *out);
 
 void imprimeProd(TProduto *produto);
-
 void imprimirBaseProd(FILE *out);
 
 void cadastrarProduto(FILE *out_produtos, FILE *in_fornecedores);
+
+void quicksortProd(FILE *arq, int tam, FILE *log);
 
 #endif

@@ -1,152 +1,143 @@
 #include "mercado.h"
 #include <time.h>
+#include <math.h>
+#include <unistd.h>
 
-void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FILE *out_fornecedores, FILE *out_produtos, FILE *out_caixas){
-    if (!out_fornecedores || !out_produtos || !out_caixas) {
-        printf("ERRO: Um ou mais ponteiros de arquivo sao nulos. A operacao foi cancelada.\n");
-        return;
+int nCaixas = 0;
+
+void embaralha(int *vet, int tam) {
+    for (int i = tam - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = vet[i];
+        vet[i] = vet[j];
+        vet[j] = temp;
     }
+}
 
+void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FILE* out_fornecedores, FILE* out_produtos, FILE* out_caixas) {
     srand(time(NULL));
-    printf("### INICIANDO GERACAO COMPLETA DA BASE DE DADOS ###\n");
+    printf("\nGerando a base de dados...\n");
 
-    // ========================================================================
-    // ETAPA 1: CRIAÇÃO DE FORNECEDORES
-    // ========================================================================
-    printf("\nGerando a base de dados de Fornecedores...\n");
-    char* prefixos[] = {"Distribuidora", "Comercio", "Importadora", "Atacado", "Central"};
-    char* sufixos[] = {"LTDA", "e Cia", "S.A.", "Express", "do Brasil"};
-    for(int i = 0; i < num_fornecedores; i++){
-        char nome[100], cnpj[20], tel[15]; // Números substituídos aqui
-        sprintf(nome, "%s de Suprimentos %s", prefixos[rand() % 5], sufixos[rand() % 5]);
-        sprintf(cnpj, "%02d.%03d.%03d/0001-%02d", rand() % 99 + 1, rand() % 1000, rand() % 1000, rand() % 100);
-        sprintf(tel, "319%08d", rand() % 100000000);
-        TFornecedor *f = fornecedor(i + 1, nome, cnpj, tel);
+    printf("Criando %d fornecedores...\n", num_fornecedores);
+    int *fornecedor_ids = (int *) malloc(sizeof(int) * num_fornecedores);
+    if (!fornecedor_ids) return;
+    for (int i = 0; i < num_fornecedores; i++) {
+        fornecedor_ids[i] = i + 1;
+    }
+    embaralha(fornecedor_ids, num_fornecedores);
+
+    for (int i = 0; i < num_fornecedores; i++) {
+        char nome[100], cnpj[20], telefone[15];
+        sprintf(nome, "Fornecedor %d", fornecedor_ids[i]);
+        sprintf(cnpj, "XX.XXX.XXX/0001-%02d", i % 100);
+        sprintf(telefone, "(XX)XXXXX-%04d", i);
+        TFornecedor *f = fornecedor(fornecedor_ids[i], nome, cnpj, telefone);
         salvaFornec(f, out_fornecedores);
         free(f);
     }
-    printf("Base de Fornecedores gerada com sucesso!\n");
+    printf("Fornecedores criados.\n");
 
-    // ========================================================================
-    // ETAPA 2: CRIAÇÃO DE PRODUTOS
-    // ========================================================================
-    printf("\nGerando a base de dados de Produtos...\n");
-    TProduto** produtos_em_memoria = (TProduto**) malloc(sizeof(TProduto*) * num_produtos);
-
-    for(int i = 0; i < num_produtos; i++){
-        char nome[100], desc[256]; // Números substituídos aqui
-        sprintf(nome, "Produto %d", i + 1);
-        sprintf(desc, "Descricao detalhada do Produto %d", i + 1);
-        float preco_aleatorio = ((float)(rand() % 30000) / 100.0f) + 1.0f;
-        int estoque_aleatorio = rand() % 500;
-        int id_fornecedor_aleatorio = (rand() % num_fornecedores) + 1;
-
-        TProduto *p = produto(i + 1, nome, desc, preco_aleatorio, estoque_aleatorio, id_fornecedor_aleatorio);
-        salvaProd(p, out_produtos);
-        produtos_em_memoria[i] = p;
+    printf("Criando %d produtos...\n", num_produtos);
+    int *produto_ids = (int *) malloc(sizeof(int) * num_produtos);
+    if (!produto_ids) { free(fornecedor_ids); return; }
+    for (int i = 0; i < num_produtos; i++) {
+        produto_ids[i] = i + 1;
     }
-    printf("Base de Produtos gerada com sucesso!\n");
+    embaralha(produto_ids, num_produtos);
 
-    // ========================================================================
-    // ETAPA 3: CRIAÇÃO DE CAIXAS (nenhuma constante para substituir aqui)
-    // ========================================================================
-    printf("\nGerando a base de dados de Caixas...\n");
-    for (int i=0; i < num_caixas; i++){
-        int num_produtos_vendidos = (rand() % 5) + 1;
-        TListaprod* lista = (TListaprod*) malloc(sizeof(TListaprod) * num_produtos_vendidos);
-        for(int j=0; j < num_produtos_vendidos; j++){
-            int produto_idx = rand() % num_produtos;
-            lista[j].produto = *produtos_em_memoria[produto_idx];
+    for (int i = 0; i < num_produtos; i++) {
+        char nome[100], descricao[256];
+        sprintf(nome, "Produto %d", produto_ids[i]);
+        sprintf(descricao, "Descricao do produto %d", produto_ids[i]);
+        float preco = (float)(rand() % 15000) / 100.0f;
+        int estoque = rand() % 500;
+        int id_fornecedor_aleatorio = fornecedor_ids[rand() % num_fornecedores];
+        TProduto *p = produto(produto_ids[i], nome, descricao, preco, estoque, id_fornecedor_aleatorio);
+        salvaProd(p, out_produtos);
+        free(p);
+    }
+    printf("Produtos criados.\n");
 
-            int qtd_a_vender = (rand() % 10) + 1;
-            if (lista[j].produto.estoque > 0 && qtd_a_vender > lista[j].produto.estoque) {
-                qtd_a_vender = lista[j].produto.estoque;
-            } else if (lista[j].produto.estoque == 0) {
-                qtd_a_vender = 0;
-            }
-            lista[j].qtdvend = qtd_a_vender;
-            lista[j].valortotal = lista[j].produto.preco * lista[j].qtdvend;
-        }
-        TCaixa *c = caixa(i + 1, lista, num_produtos_vendidos);
+    printf("Criando %d caixas...\n", num_caixas);
+    int *caixa_ids = (int *) malloc(sizeof(int) * num_caixas);
+    if (!caixa_ids) { free(fornecedor_ids); free(produto_ids); return; }
+    for (int i = 0; i < num_caixas; i++) {
+        caixa_ids[i] = i + 1;
+    }
+    embaralha(caixa_ids, num_caixas);
+
+    for (int i = 0; i < num_caixas; i++) {
+        TCaixa *c = caixa(caixa_ids[i], 0.0f);
         salvaCaixa(c, out_caixas);
-        free(lista);
         free(c);
     }
-    printf("Base de Caixas gerada com sucesso!\n");
+    printf("Caixas criados.\n");
 
-    // ========================================================================
-    // ETAPA 4: LIMPEZA DA MEMÓRIA
-    // ========================================================================
-    for (int i = 0; i < num_produtos; i++) {
-        free(produtos_em_memoria[i]);
-    }
-    free(produtos_em_memoria);
-
-    printf("\n### GERACAO DA BASE DE DADOS CONCLUIDA COM SUCESSO! ###\n");
+    free(fornecedor_ids);
+    free(produto_ids);
+    free(caixa_ids);
+    printf("Base de dados criada com sucesso!\n");
 }
 
-void adicionarCaixas(int num_caixas, FILE *out_caixas){
-    if (!out_caixas) {
-        printf("ERRO: Ponteiro de arquivo para caixas é nulo. A operação foi cancelada.\n");
-        return;
+void adicionarCaixas(FILE* arq_caixas, int num_a_adicionar) {
+    printf("\nAdicionando %d novos caixas...\n", num_a_adicionar);
+    fseek(arq_caixas, 0, SEEK_END);
+    for (int i = 0; i < num_a_adicionar; i++) {
+        int novo_id = nCaixas + 1;
+        TCaixa *c = caixa(novo_id, 0.0f);
+        salvaCaixa(c, arq_caixas);
+        free(c);
+        nCaixas++;
+        printf("Caixa com ID %d adicionado. Total de caixas agora: %d\n", novo_id, nCaixas);
     }
-
-    printf("\n### INICIANDO ADIÇÃO DE CAIXAS ###\n");
-
-    //Gera o id igual no resto
-    int proximo_id = 1;
-    TCaixa *caixa_temp;
-    rewind(out_caixas);
-    while ((caixa_temp = leCaixa(out_caixas)) != NULL) { //
-        if (caixa_temp->id >= proximo_id) {
-            proximo_id = caixa_temp->id + 1;
-        }
-        if (caixa_temp->lista) {
-            free(caixa_temp->lista);
-        }
-        free(caixa_temp);
-    }
-
-
-
-    // Adiciona os caixas
-    fseek(out_caixas, 0, SEEK_END); //Cursor no final
-
-    for (int i = 0; i < num_caixas; i++){
-        // Para cada novo caixa, a lista de produtos é nula e o número de produtos é 0
-        TCaixa *c = caixa(proximo_id + i, NULL, 0);
-        if(c){
-            salvaCaixa(c, out_caixas); //
-            free(c);
-        }
-    }
-
-    printf("%d caixas zerados foram adicionados com sucesso, começando pelo ID %d.\n", num_caixas, proximo_id);
-    printf("### FINALIZADO ###\n");
+    fflush(arq_caixas);
+    printf("Adicao de caixas concluida.\n");
 }
 
-//Funções de busca binaria e sequencial praticamente iguais da aula, com alterações para caber no código
-TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *pos_encontrada, FILE *log) {
-    TProduto *p = NULL;
-    int cod = -1;
-    int cont = 0;
+TFornecedor *buscaBinariaFornecedor(int chave, FILE *in, int inicio, int fim, long *pos_encontrada, FILE *log) {
+    TFornecedor *f = NULL;
+    int cod = -1, cont = 0;
     clock_t inicioT, fimT;
     double total;
-
     inicioT = clock();
-
     while (inicio <= fim) {
         cont++;
         int meio = trunc((inicio + fim) / 2.0);
+        *pos_encontrada = (long)(meio - 1) * sizeof(TFornecedor);
+        fseek(in, *pos_encontrada, SEEK_SET);
+        f = leFornec(in);
+        if (!f) break;
+        cod = f->id;
+        if (cod == chave) {
+            fprintf(log, "\n-- Busca Binária Fornecedor (ID: %d) --", chave);
+            fprintf(log, "\nComparacoes: %d", cont);
+            fimT = clock();
+            total = (double)(fimT - inicioT) / CLOCKS_PER_SEC;
+            fprintf(log, "\nTempo: %f segundos\n", total);
+            return f;
+        }
+        if (cod > chave) fim = meio - 1;
+        else inicio = meio + 1;
+        free(f);
+    }
+    *pos_encontrada = -1;
+    return NULL;
+}
 
+TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *pos_encontrada, FILE *log) {
+    TProduto *p = NULL;
+    int cod = -1, cont = 0;
+    clock_t inicioT, fimT;
+    double total;
+    inicioT = clock();
+    while (inicio <= fim) {
+        cont++;
+        int meio = trunc((inicio + fim) / 2.0);
         *pos_encontrada = (long)(meio - 1) * sizeof(TProduto);
         fseek(in, *pos_encontrada, SEEK_SET);
         p = leProd(in);
-
         if (!p) break;
-
         cod = p->id;
-
         if (cod == chave) {
             fprintf(log, "\n-- Busca Binária Produto (ID: %d) --", chave);
             fprintf(log, "\nComparacoes: %d", cont);
@@ -155,15 +146,10 @@ TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *po
             fprintf(log, "\nTempo: %f segundos\n", total);
             return p;
         }
-
-        if (cod > chave) {
-            fim = meio - 1;
-        } else {
-            inicio = meio + 1;
-        }
+        if (cod > chave) fim = meio - 1;
+        else inicio = meio + 1;
         free(p);
     }
-
     *pos_encontrada = -1;
     return NULL;
 }
@@ -171,133 +157,202 @@ TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *po
 TCaixa *buscaSequencialCaixa(int chave, FILE *in, long *pos_encontrada, FILE *log) {
     TCaixa *c;
     int achou = 0;
-    int cont = 0;
-    clock_t inicio, fim;
-    double total;
-
     rewind(in);
-    inicio = clock();
-
-    while (1) {
+    while(1){
         *pos_encontrada = ftell(in);
         c = leCaixa(in);
-        if (c == NULL) {
+        if(c == NULL) break;
+        if (c->id == chave) {
+            achou = 1;
             break;
         }
-
-        cont++;
-
-        if (c->id == chave) {
-           achou = 1;
-           break;
-        }
-
-        if (c->lista) free(c->lista);
         free(c);
     }
-
-    fim = clock();
-    total = (double)(fim - inicio) / CLOCKS_PER_SEC;
-
-    if (achou == 1) {
-        fprintf(log, "\n-- Busca Sequencial Caixa (ID: %d) --", chave);
-        fprintf(log, "\nComparacoes: %d", cont);
-        fprintf(log, "\nTempo: %f segundos\n", total);
-        return c;
-    } else {
-        printf("Caixa nao encontrado\n");
-        fprintf(log, "\n-- Busca Sequencial Caixa (ID: %d) --", chave);
-        fprintf(log, "\nNao encontrado. Comparacoes: %d", cont);
-        fprintf(log, "\nTempo: %f segundos\n", total);
+    if (achou) return c;
+    else {
         *pos_encontrada = -1;
         return NULL;
     }
 }
 
-
-
 void Vender(int id_caixa, int id_produto, FILE* arq_caixas, FILE* arq_produtos, FILE* log) {
-    //Acha o produto
     long pos_produto = -1;
     fseek(arq_produtos, 0, SEEK_END);
-    int num_produtos = ftell(arq_produtos) / sizeof(TProduto); //Pega o numero de produtos
+    int num_produtos_total = ftell(arq_produtos) / sizeof(TProduto);
+    TProduto *produto_vendido = buscaBinariaProduto(id_produto, arq_produtos, 1, num_produtos_total, &pos_produto, log);
 
-    TProduto *produto_vendido = buscaBinariaProduto(id_produto, arq_produtos, 1, num_produtos, &pos_produto, log); //busca binaria
-
-    //Se não achar...
-    if (produto_vendido == NULL) {
-        printf("ERRO: Produto com ID %d não encontrado!\n", id_produto);
-        fprintf(log, "\nERRO: Produto com ID %d não encontrado na busca.\n", id_produto);
+    if (produto_vendido == NULL || produto_vendido->estoque <= 0) {
+        printf("ERRO: Produto com ID %d nao encontrado ou sem estoque!\n", id_produto);
+        if(produto_vendido) free(produto_vendido);
         return;
     }
 
-    //Se não tiver em estoque...
-    if (produto_vendido->estoque <= 0) {
-        printf("ERRO: Produto '%s' (ID: %d) sem estoque!\n", produto_vendido->nome, id_produto);
-        free(produto_vendido);
-        return;
-    }
-
-
-
-
-    //Acha o caixa
     long pos_caixa = -1;
     TCaixa *caixa_venda = buscaSequencialCaixa(id_caixa, arq_caixas, &pos_caixa, log);
 
     if (caixa_venda == NULL) {
-        // A própria buscaSequencialCaixa já imprime "Caixa nao encontrado"
-        fprintf(log, "\nERRO: Caixa com ID %d não encontrado na busca.\n", id_caixa);
+        printf("ERRO: Caixa com ID %d nao encontrado!\n", id_caixa);
         free(produto_vendido);
         return;
     }
 
-
-
-
-    //Processa a venda
-    //Verifica se o produto já ta na lista
-    int produto_ja_na_lista = 0;
-    for (int i = 0; i < caixa_venda->num_produtos; i++) {
-        //Se tiver...
-        if (caixa_venda->lista[i].produto.id == id_produto) {
-            caixa_venda->lista[i].qtdvend++; //aumenta a quantidade vendida
-            caixa_venda->lista[i].valortotal = caixa_venda->lista[i].qtdvend * caixa_venda->lista[i].produto.preco; //atualiza o valor total
-            produto_ja_na_lista = 1;
-            break;
-        }
-    }
-
-    //Se não tiver, ele adiciona na lista e faz a mesma coisa
-    if (!produto_ja_na_lista) {
-        caixa_venda->num_produtos++;
-        caixa_venda->lista = (TListaprod *) realloc(caixa_venda->lista, caixa_venda->num_produtos * sizeof(TListaprod));
-        if (caixa_venda->lista == NULL) {
-             printf("ERRO: Falha ao alocar memória para a lista de produtos do caixa!\n");
-             free(produto_vendido);
-             if (caixa_venda->lista) free(caixa_venda->lista);
-             free(caixa_venda);
-             return;
-        }
-        TListaprod *novo_item = &caixa_venda->lista[caixa_venda->num_produtos - 1];
-        novo_item->produto = *produto_vendido;
-        novo_item->qtdvend = 1;
-        novo_item->valortotal = novo_item->produto.preco;
-    }
-
-    //Atualiza o estoque e salva as alterações
+    caixa_venda->valor_arrecadado += produto_vendido->preco;
     produto_vendido->estoque--;
-    fseek(arq_produtos, pos_produto, SEEK_SET);
-    salvaProd(produto_vendido, arq_produtos); //Salva na posição que ele estava, dando overwrite
 
     fseek(arq_caixas, pos_caixa, SEEK_SET);
-    salvaCaixa(caixa_venda, arq_caixas); //Mesma coisa aqui
+    salvaCaixa(caixa_venda, arq_caixas);
+    fflush(arq_caixas);
 
-    printf("Venda realizada com sucesso!\n -> Produto: %s | Novo Estoque: %d\n -> Caixa: %d | Total de itens na compra: %d\n",
-           produto_vendido->nome, produto_vendido->estoque, id_caixa, caixa_venda->num_produtos);
+    fseek(arq_produtos, pos_produto, SEEK_SET);
+    salvaProd(produto_vendido, arq_produtos);
+    fflush(arq_produtos);
 
-    //Limpa a memoria
+    printf("\nVenda realizada com sucesso!\n");
+    printf(" -> Caixa %d | Novo valor arrecadado: R$%.2f\n", id_caixa, caixa_venda->valor_arrecadado);
+    printf(" -> Produto: %s | Novo Estoque: %d\n", produto_vendido->nome, produto_vendido->estoque);
+
     free(produto_vendido);
-    if(caixa_venda->lista) free(caixa_venda->lista);
     free(caixa_venda);
+}
+
+void consultarProdutoPorId(FILE *arq_produtos, int id, FILE *log) {
+    printf("\nConsultando produto com ID %d...\n", id);
+    long pos = -1;
+    fseek(arq_produtos, 0, SEEK_END);
+    int total_produtos = ftell(arq_produtos) / sizeof(TProduto);
+    TProduto *p = buscaBinariaProduto(id, arq_produtos, 1, total_produtos, &pos, log);
+
+    if (p != NULL) {
+        imprimeProd(p);
+        free(p);
+    } else {
+        printf("Produto com ID %d nao encontrado.\n", id);
+        fprintf(log, "\nConsulta: Produto com ID %d nao encontrado.\n", id);
+    }
+}
+
+void consultarFornecedorPorId(FILE *arq_fornecedores, int id, FILE *log) {
+    printf("\nConsultando fornecedor com ID %d...\n", id);
+    long pos = -1;
+    fseek(arq_fornecedores, 0, SEEK_END);
+    int total_fornecedores = ftell(arq_fornecedores) / sizeof(TFornecedor);
+    TFornecedor *f = buscaBinariaFornecedor(id, arq_fornecedores, 1, total_fornecedores, &pos, log);
+
+    if (f != NULL) {
+        imprimeFornec(f);
+        free(f);
+    } else {
+        printf("Fornecedor com ID %d nao encontrado.\n", id);
+        fprintf(log, "\nConsulta: Fornecedor com ID %d nao encontrado.\n", id);
+    }
+}
+
+void consultarCaixaPorId(FILE *arq_caixas, int id, FILE *log) {
+    printf("\nConsultando caixa com ID %d...\n", id);
+    long pos = -1;
+    TCaixa *c = buscaSequencialCaixa(id, arq_caixas, &pos, log);
+
+    if (c != NULL) {
+        imprimeCaixa(c);
+        free(c);
+    } else {
+        fprintf(log, "\nConsulta: Caixa com ID %d nao encontrado.\n", id);
+    }
+}
+
+void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
+    int id_produto;
+    printf("\n### ATUALIZAÇÃO DE PRODUTO ###\n");
+    printf("Digite o ID do produto que deseja atualizar: ");
+    scanf("%d", &id_produto);
+    while (getchar() != '\n'); // Limpa o buffer do teclado
+
+    long pos_produto = -1;
+    fseek(arq_produtos, 0, SEEK_END);
+    int num_produtos_total = ftell(arq_produtos) / sizeof(TProduto);
+
+    TProduto *p = buscaBinariaProduto(id_produto, arq_produtos, 1, num_produtos_total, &pos_produto, log);
+
+    if (p == NULL) {
+        printf("ERRO: Produto com ID %d não encontrado.\n", id_produto);
+        return;
+    }
+
+    printf("\nProduto encontrado. Dados atuais:\n");
+    imprimeProd(p);
+
+    printf("\nDigite os novos dados do produto:\n");
+
+    printf("Novo Nome: ");
+    fgets(p->nome, sizeof(p->nome), stdin);
+    p->nome[strcspn(p->nome, "\n")] = 0;
+
+    printf("Nova Descrição: ");
+    fgets(p->descricao, sizeof(p->descricao), stdin);
+    p->descricao[strcspn(p->descricao, "\n")] = 0;
+
+    printf("Novo Preço: ");
+    scanf("%f", &p->preco);
+
+    printf("Novo Estoque: ");
+    scanf("%d", &p->estoque);
+    while (getchar() != '\n');
+
+    int fornecedor_valido = 0;
+    while (!fornecedor_valido) {
+        printf("Novo ID do Fornecedor: ");
+        scanf("%d", &p->idFornecedor);
+        while (getchar() != '\n');
+
+        rewind(arq_fornecedores);
+        TFornecedor *fornec_temp;
+        while ((fornec_temp = leFornec(arq_fornecedores)) != NULL) {
+            if (fornec_temp->id == p->idFornecedor) {
+                fornecedor_valido = 1;
+                free(fornec_temp);
+                break;
+            }
+            free(fornec_temp);
+        }
+        if (!fornecedor_valido) {
+            printf("ERRO: ID de fornecedor inválido. Tente novamente.\n");
+        }
+    }
+
+    fseek(arq_produtos, pos_produto, SEEK_SET);
+    salvaProd(p, arq_produtos);
+    fflush(arq_produtos);
+
+    printf("\nProduto com ID %d atualizado com sucesso!\n", id_produto);
+    free(p);
+}
+
+void imprimirEstoqueBaixo(FILE *arquivo_produtos, int limite, FILE *log) {
+    printf("\n--- RELATÓRIO DE PRODUTOS COM ESTOQUE BAIXO (Abaixo de %d) ---\n", limite);
+    fprintf(log, "\n--- Relatorio de Estoque Baixo (Limite: %d) ---\n", limite);
+
+    rewind(arquivo_produtos);
+    TProduto *produto_atual;
+    int produtos_encontrados = 0;
+
+    while ((produto_atual = leProd(arquivo_produtos)) != NULL) {
+        if (produto_atual->estoque < limite) {
+            imprimeProd(produto_atual);
+            fprintf(log, "ID: %d | Nome: %s | Estoque: %d\n", produto_atual->id, produto_atual->nome, produto_atual->estoque);
+            produtos_encontrados++;
+        }
+        free(produto_atual);
+    }
+
+    if (produtos_encontrados == 0) {
+        printf("\nNenhum produto com estoque baixo encontrado.\n");
+        fprintf(log, "Nenhum produto com estoque baixo encontrado.\n");
+    } else {
+        printf("\nTotal de produtos com estoque baixo: %d\n", produtos_encontrados);
+        fprintf(log, "Total de produtos com estoque baixo: %d\n", produtos_encontrados);
+    }
+
+    printf("--- FIM DO RELATÓRIO ---\n");
+    fprintf(log, "--- Fim do Relatorio ---\n\n");
+    fflush(log);
 }

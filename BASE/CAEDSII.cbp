@@ -46,6 +46,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="mercado.h" />
+		<Unit filename="metricas.h" />
 		<Unit filename="produto.c">
 			<Option compilerVar="CC" />
 		</Unit>

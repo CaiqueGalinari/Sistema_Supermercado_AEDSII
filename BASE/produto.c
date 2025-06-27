@@ -1,5 +1,6 @@
 #include "produto.h"
 #include <string.h>
+#include <time.h>
 
 TProduto *produto(int id, char *nome, char *descricao, float preco, int estoque, int idFornecedor){
     TProduto *prod = (TProduto *) malloc(sizeof(TProduto));
@@ -28,34 +29,31 @@ void imprimeProd(TProduto *produto) {
     printf("\nDescrição: ");
     printf("%s", produto->descricao);
     printf("\nPreço unitário: ");
-    printf("R$%.2lf", produto->preco);
+    printf("R$%.2f", produto->preco);
+    printf("\nEstoque: ");
+    printf("%d", produto->estoque);
     printf("\nFornecedor de código: ");
     printf("%d", produto->idFornecedor);
     printf("\n**********************************************");
 }
 
-// Le um fornecedor do arquivo in na posicao atual do cursor
-// Retorna um ponteiro para funcionario lido do arquivo
 TProduto *leProd(FILE *in) {
     TProduto *prod = (TProduto *) malloc(sizeof(TProduto));
-    if (0 >= fread(&prod->id, sizeof(int), 1, in)) {
+    if (prod == NULL) {
+        perror("Erro de alocacao de memoria para produto");
+        return NULL;
+    }
+    if (fread(prod, sizeof(TProduto), 1, in) != 1) {
         free(prod);
         return NULL;
     }
-    fread(prod->nome, sizeof(char), sizeof(prod->nome), in);
-    fread(prod->descricao, sizeof(char), sizeof(prod->descricao), in);
-    fread(&prod->preco, sizeof(float), 1, in);
-    fread(&prod->estoque, sizeof(int), 1, in);
-    fread(&prod->idFornecedor, sizeof(int), 1, in);
     return prod;
 }
 
 void imprimirBaseProd(FILE *out){
-printf("\nImprimindo a base de dados de produtos...\n");
-
+    printf("\nImprimindo a base de dados de produtos...\n");
     rewind(out);
     TProduto *p;
-
     while ((p = leProd(out)) != NULL){
         imprimeProd(p);
         free(p);
@@ -67,11 +65,10 @@ void cadastrarProduto(FILE *out_produtos, FILE *in_fornecedores) {
     float preco;
     int estoque, idFornecedor;
     int temp_char;
-
-    // Gerar o id com base na quantidade de produtos existente
     int novo_id = 1;
     TProduto *p_temp;
-    rewind(out_produtos); // Garante que a leitura comece do início
+
+    rewind(out_produtos);
     while ((p_temp = leProd(out_produtos)) != NULL) {
         if (p_temp->id >= novo_id) {
             novo_id = p_temp->id + 1;
@@ -82,16 +79,12 @@ void cadastrarProduto(FILE *out_produtos, FILE *in_fornecedores) {
     printf("\n### CADASTRO DE NOVO PRODUTO ###\n");
     printf("O ID do novo produto será: %d\n", novo_id);
 
-    // Solicita e armazena os dados do produto
     printf("Digite o nome do produto: ");
     fgets(nome, sizeof(nome), stdin);
-    // Limpa o buffer pro proximo dado
     if(strchr(nome,'\n') == NULL){
-        while ((temp_char = getchar()) != '\n' && temp_char != EOF){} //EOF é o fim do arquivo
+        while ((temp_char = getchar()) != '\n' && temp_char != EOF){}
     }
-    nome[strcspn(nome, "\n")] = 0; //troca \n por \0
-
-
+    nome[strcspn(nome, "\n")] = 0;
 
     printf("Digite a descrição do produto: ");
     fgets(descricao, sizeof(descricao), stdin);
@@ -99,32 +92,22 @@ void cadastrarProduto(FILE *out_produtos, FILE *in_fornecedores) {
         while ((temp_char = getchar()) != '\n' && temp_char != EOF){}
     descricao[strcspn(descricao, "\n")] = 0;
 
-
-
     printf("Digite o preço do produto: ");
     scanf("%f", &preco);
-
-
 
     printf("Digite a quantidade em estoque: ");
     scanf("%d", &estoque);
     while ((temp_char = getchar()) != '\n' && temp_char != EOF){}
 
-    // O fornecedor precisa ser verificado (p ver se existe)
     int fornecedor_valido = 0;
-    //Loop p repetir caso invalido
     while (!fornecedor_valido) {
-        //Pega o id do fornecedor
         printf("Digite o ID do fornecedor: ");
         scanf("%d", &idFornecedor);
         while ((temp_char = getchar()) != '\n' && temp_char != EOF){}
 
-
-
         TFornecedor *fornec_temp;
-        rewind(in_fornecedores); // Volta ao início do arquivo de fornecedores para buscar
-        //Faz a verificação
-        while ((fornec_temp = leFornec(in_fornecedores)) != NULL) { //
+        rewind(in_fornecedores);
+        while ((fornec_temp = leFornec(in_fornecedores)) != NULL) {
             if (fornec_temp->id == idFornecedor) {
                 fornecedor_valido = 1;
                 free(fornec_temp);
@@ -138,12 +121,79 @@ void cadastrarProduto(FILE *out_produtos, FILE *in_fornecedores) {
         }
     }
 
-    // salva no arquivo
-    TProduto *p = produto(novo_id, nome, descricao, preco, estoque, idFornecedor); //
-
+    TProduto *p = produto(novo_id, nome, descricao, preco, estoque, idFornecedor);
     fseek(out_produtos, 0, SEEK_END);
-    salvaProd(p, out_produtos); //
+    salvaProd(p, out_produtos);
     free(p);
 
     printf("\nProduto '%s' cadastrado com sucesso!\n", nome);
+}
+
+static void trocarProd(FILE *arq, int i, int j, TMetrica *metricas) {
+    if (i == j) return;
+    TProduto *p_i = (TProduto*) malloc(sizeof(TProduto));
+    TProduto *p_j = (TProduto*) malloc(sizeof(TProduto));
+
+    fseek(arq, i * sizeof(TProduto), SEEK_SET);
+    fread(p_i, sizeof(TProduto), 1, arq);
+    fseek(arq, j * sizeof(TProduto), SEEK_SET);
+    fread(p_j, sizeof(TProduto), 1, arq);
+
+    fseek(arq, i * sizeof(TProduto), SEEK_SET);
+    fwrite(p_j, sizeof(TProduto), 1, arq);
+    fseek(arq, j * sizeof(TProduto), SEEK_SET);
+    fwrite(p_i, sizeof(TProduto), 1, arq);
+
+    metricas->trocas++;
+    free(p_i);
+    free(p_j);
+}
+
+static int particionaProd(FILE *arq, int baixo, int alto, TMetrica *metricas) {
+    TProduto *pivo = (TProduto*) malloc(sizeof(TProduto));
+    fseek(arq, alto * sizeof(TProduto), SEEK_SET);
+    fread(pivo, sizeof(TProduto), 1, arq);
+
+    int i = (baixo - 1);
+    TProduto *p_j = (TProduto*) malloc(sizeof(TProduto));
+
+    for (int j = baixo; j <= alto - 1; j++) {
+        fseek(arq, j * sizeof(TProduto), SEEK_SET);
+        fread(p_j, sizeof(TProduto), 1, arq);
+        metricas->comparacoes++;
+        if (p_j->id < pivo->id) {
+            i++;
+            trocarProd(arq, i, j, metricas);
+        }
+    }
+    trocarProd(arq, i + 1, alto, metricas);
+    free(pivo);
+    free(p_j);
+    return (i + 1);
+}
+
+static void quicksortRecursivoProd(FILE *arq, int baixo, int alto, TMetrica *metricas) {
+    if (baixo < alto) {
+        int pi = particionaProd(arq, baixo, alto, metricas);
+        quicksortRecursivoProd(arq, baixo, pi - 1, metricas);
+        quicksortRecursivoProd(arq, pi + 1, alto, metricas);
+    }
+}
+
+void quicksortProd(FILE *arq, int tam, FILE *log) {
+    if (tam <= 1) return;
+    TMetrica metricas = {0.0, 0, 0};
+    clock_t inicio = clock();
+
+    quicksortRecursivoProd(arq, 0, tam - 1, &metricas);
+
+    clock_t fim = clock();
+    metricas.texec = ((double)(fim - inicio)) / CLOCKS_PER_SEC;
+    fflush(arq);
+
+    fprintf(log, "\n--- Metricas Quicksort (Produtos) ---\n");
+    fprintf(log, "Comparacoes: %d\n", metricas.comparacoes);
+    fprintf(log, "Trocas: %d\n", metricas.trocas);
+    fprintf(log, "Tempo de Execucao: %.4f segundos\n", metricas.texec);
+    fflush(log);
 }

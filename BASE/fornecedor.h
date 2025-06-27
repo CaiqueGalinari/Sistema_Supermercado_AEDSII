@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "metricas.h"
 
 typedef struct fornecedor{
     int id;
@@ -14,13 +15,13 @@ typedef struct fornecedor{
 TFornecedor *fornecedor(int id, char *nome, char *cnpj, char *telefone);
 
 TFornecedor *leFornec(FILE *in);
-
 void salvaFornec(TFornecedor *fornecedor, FILE *out);
 
 void imprimeFornec(TFornecedor *fornecedor);
-
 void imprimirBaseFornec(FILE *out);
 
 void cadastrarFornecedor(FILE *out);
+
+void quicksortFornec(FILE *arq, int tam, FILE *log);
 
 #endif
