@@ -31,6 +31,7 @@ int main() {
     printf("2 - Imprimir produtos\n");
     printf("3 - Imprimir Caixas\n");
     printf("4 - Ordenar fornecedores (isto e necessario outras operacoes)\n");
+    printf("40 - Ordenar fornecedores por partição (isto e necessario outras operacoes)\n");
     printf("5 - Ordenar produtos (isto e necessario outras operacoes)\n");
     printf("6 - Ordenar caixa\n");
     printf("7 - Procurar fornecedor por ID\n");
@@ -106,6 +107,20 @@ int main() {
         break;
         case 15:
             imprimirEstoqueBaixo(prod, 5, log);
+        break;
+        case 40:
+            int registros;
+            printf("\n--- Ordenacao Externa ---\n");
+            printf("Digite o número de registros que podem ser criados para a ordenacao (ex: 100): ");
+            scanf("%d", &registros);
+            while(getchar() != '\n'); // Limpa o buffer
+
+            if (registros > 0) {
+            // A chamada da função continua idêntica
+            OrdenacaoEmDiscoFornec(forn, forn, log, registros);
+        } else {
+            printf("Quantidade inválida.\n");
+        }
         break;
         default:
         break;

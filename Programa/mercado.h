@@ -17,6 +17,7 @@ void adicionarCaixas(FILE* arq_caixas, int num_a_adicionar);
 TFornecedor *buscaBinariaFornecedor(int chave, FILE *in, int inicio, int fim, long *pos_encontrada, FILE *log);
 TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *pos_encontrada, FILE *log);
 TCaixa *buscaSequencialCaixa(int chave, FILE *in, long *pos_encontrada, FILE *log);
+void OrdenacaoEmDiscoFornec(FILE* arqEntrada, FILE* arqSaida, FILE* arqLog, int M);
 
 
 void Vender(int id_caixa, int id_produto, FILE* arq_caixas, FILE* arq_produtos, FILE* log);

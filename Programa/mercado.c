@@ -2,6 +2,8 @@
 #include <time.h>
 #include <math.h>
 #include <unistd.h>
+#include "selecao_natural.h"
+#include "intercalacao_otima.h"
 
 int nCaixas = 0;
 
@@ -174,6 +176,51 @@ TCaixa *buscaSequencialCaixa(int chave, FILE *in, long *pos_encontrada, FILE *lo
     else {
         *pos_encontrada = -1;
         return NULL;
+    }
+}
+
+void OrdenacaoEmDiscoFornec(FILE* arqEntrada, FILE* arqSaida, FILE* arqLog, int M) {
+    TMetrica metricas = {0.0, 0, 0};
+    clock_t inicio_total = clock();
+
+    // --- FASE 1: Geração de Partições ---
+    // A função lê do stream de entrada que já veio aberto.
+    rewind(arqEntrada); // Garante que a leitura comece do início do stream
+    int numParticoes = selecaoNaturalFornec(arqEntrada, "particao_temp_", M, &metricas);
+
+    // --- FASE 2: Intercalação ---
+    // A intercalação cria um último arquivo temporário com o resultado final.
+    const char* nomeSaidaTemporario = "sorted_temp_output.dat";
+    intercalacaoOtimaFornec("particao_temp_", numParticoes, nomeSaidaTemporario, &metricas);
+
+    // --- FASE 3: Copiar o resultado para o stream de saída ---
+    // Abre o resultado final temporário para leitura
+    FILE* arqFinalOrdenado = fopen(nomeSaidaTemporario, "rb");
+    if (arqFinalOrdenado) {
+        TFornecedor* fornec;
+        rewind(arqSaida);
+        // Copia cada registro do arquivo temporário para o stream de saída
+        while ((fornec = leFornec(arqFinalOrdenado)) != NULL) {
+            salvaFornec(fornec, arqSaida);
+            free(fornec);
+        }
+        fclose(arqFinalOrdenado);
+        remove(nomeSaidaTemporario); // Limpa o último arquivo temporário
+    }
+
+    // --- FASE 4: Logging ---
+    clock_t fim_total = clock();
+    metricas.texec = ((double)(fim_total - inicio_total)) / CLOCKS_PER_SEC;
+
+    // Escreve no stream de log que já veio aberto
+    if (arqLog) {
+        fprintf(arqLog, "\n--- Metricas Ordenacao (Modo Stream) ---\n");
+        fprintf(arqLog, "Memoria (M): %d registros\n", M);
+        fprintf(arqLog, "Particoes Geradas: %d\n", numParticoes);
+        fprintf(arqLog, "Comparacoes: %d\n", metricas.comparacoes);
+        fprintf(arqLog, "Movimentacoes: %d\n", metricas.trocas);
+        fprintf(arqLog, "Tempo: %.4f segundos\n", metricas.texec);
+        fflush(arqLog); // Garante que o log seja escrito no disco
     }
 }
 

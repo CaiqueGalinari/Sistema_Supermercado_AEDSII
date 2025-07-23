@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="fornecedor.h" />
+		<Unit filename="intercalacao_otima.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="intercalacao_otima.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -51,6 +55,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="produto.h" />
+		<Unit filename="selecao_natural.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="selecao_natural.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>
