@@ -265,65 +265,65 @@
 	"produto.h"
 	"caixa.h"
 
-1753303024 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\caixa.c
+1753392510 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\caixa.c
 	"caixa.h"
 	<string.h>
 
-1753303024 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\caixa.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\caixa.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"produto.h"
 	"metricas.h"
 
-1753303024 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\produto.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\produto.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"fornecedor.h"
 	"metricas.h"
 
-1753303024 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\fornecedor.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\fornecedor.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"metricas.h"
 
-1753303024 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\metricas.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\metricas.h
 	<time.h>
 
-1753303024 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\fornecedor.c
+1753392510 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\fornecedor.c
 	"fornecedor.h"
 	<string.h>
 	<time.h>
 
-1753303024 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\produto.c
+1753392510 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\produto.c
 	"produto.h"
 	<string.h>
 	<time.h>
 
-1753306023 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\intercalacao_otima.c
+1753392510 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\intercalacao_otima.c
 	"intercalacao_otima.h"
 	"fornecedor.h"
 	<stdlib.h>
 	<string.h>
 
-1753306023 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\intercalacao_otima.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\intercalacao_otima.h
 	<stdio.h>
 	"metricas.h"
 
-1753306023 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\selecao_natural.c
+1753392510 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\selecao_natural.c
 	"selecao_natural.h"
 	<stdlib.h>
 	<string.h>
 	<limits.h>
 
-1753306023 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\selecao_natural.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\selecao_natural.h
 	<stdio.h>
 	"fornecedor.h"
 	"metricas.h"
 
-1753309146 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\main.c
+1753393105 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\main.c
 	<stdio.h>
 	<stdlib.h>
 	"mercado.h"
@@ -331,11 +331,19 @@
 	"produto.h"
 	"caixa.h"
 
-1753309146 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\mercado.h
+1753392510 c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\mercado.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	"fornecedor.h"
 	"produto.h"
 	"caixa.h"
+
+1753392510 source:c:\users\admin\documents\github\sistema_supermercado_aedsii\programa\mercado.c
+	"mercado.h"
+	<time.h>
+	<math.h>
+	<unistd.h>
+	"selecao_natural.h"
+	"intercalacao_otima.h"
 

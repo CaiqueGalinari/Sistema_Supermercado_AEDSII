@@ -12,6 +12,9 @@ int main() {
     FILE *prod = fopen("produtos.dat", "wb+");
     FILE *caix = fopen("caixas.dat", "wb+");
     FILE *log = fopen("log.txt", "w+");
+    #define NUM_FORNEC 100
+    #define NUM_PROD 10
+    #define NUM_CAIX 10
 
 
     if (forn == NULL || prod == NULL || caix == NULL) {
@@ -20,7 +23,7 @@ int main() {
     }
     int menu = 0, escolha = 0, escolha2 = 0 ;
     //-----------  Cria as bases de dados (caso vá utilizar, se lembre de mudar a leitura para wb+)  -----------
-    criarBaseMercado(200, 5000, 60, forn, prod, caix);
+    criarBaseMercado(NUM_FORNEC, NUM_PROD, NUM_CAIX, forn, prod, caix);
     //                ^^^^^^^^^^^^^^^^ > Tamanho padrão da base
 
     do{
@@ -58,15 +61,15 @@ int main() {
             imprimirBaseCaixa(caix);
         break;
         case 4:
-            quicksortFornec(forn, 200, log);
+            quicksortFornec(forn, NUM_FORNEC, log);
             printf("Fornecedores ordenados\n");
         break;
         case 5:
-            quicksortProd(prod, 5000, log);
+            quicksortProd(prod, NUM_PROD, log);
             printf("Produtos ordenados\n");
         break;
         case 6:
-            quicksortCaix(prod, 60, log);
+            quicksortCaix(prod, NUM_CAIX, log);
             printf("Caixas ordenados\n");
         break;
         case 7:
@@ -109,18 +112,7 @@ int main() {
             imprimirEstoqueBaixo(prod, 5, log);
         break;
         case 40:
-            int registros;
-            printf("\n--- Ordenacao Externa ---\n");
-            printf("Digite o número de registros que podem ser criados para a ordenacao (ex: 100): ");
-            scanf("%d", &registros);
-            while(getchar() != '\n'); // Limpa o buffer
-
-            if (registros > 0) {
-            // A chamada da função continua idêntica
-            OrdenacaoEmDiscoFornec(forn, forn, log, registros);
-        } else {
-            printf("Quantidade inválida.\n");
-        }
+            OrdenacaoEmDiscoFornec(forn, forn, log, 1000);
         break;
         default:
         break;

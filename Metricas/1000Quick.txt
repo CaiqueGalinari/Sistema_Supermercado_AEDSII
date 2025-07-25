@@ -1,0 +1,5 @@
+
+--- Metricas Quicksort (Fornecedores) ---
+Comparacoes: 11447
+Trocas: 4066
+Tempo de Execucao: 0.0780 segundos
