@@ -1,23 +1,22 @@
 #include "intercalacao_otima.h"
-#include "fornecedor.h" // Necessário para leFornec e salvaFornec dentro da mesclagem
+#include "fornecedor.h"
 #include <stdlib.h>
 #include <string.h>
 
 #define MAX_PARTICOES 1000
 
-// Estrutura privada para o nó da min-heap
 typedef struct {
     char nomeArquivo[256];
     long numRegistros;
 } ParticaoInfo;
 
-// Declarações estáticas (privadas) para as funções auxiliares do módulo
+
 static void minHeapify(ParticaoInfo arr[], int n, int i, TMetrica *metricas);
 static ParticaoInfo extrairMin(ParticaoInfo arr[], int *n, TMetrica *metricas);
 static void inserirNoHeap(ParticaoInfo arr[], int *n, ParticaoInfo novaParticao, TMetrica *metricas);
 static ParticaoInfo mesclarParticoes(ParticaoInfo p1, ParticaoInfo p2, int idMerge, TMetrica* metricas);
 
-// --- Implementação da Função Pública ---
+
 void intercalacaoOtimaFornec(const char* nomeBase, int numParticoes, const char* nomeSaidaFinal, TMetrica* metricas) {
     if (numParticoes <= 0) return;
     if (numParticoes == 1) {
@@ -29,7 +28,7 @@ void intercalacaoOtimaFornec(const char* nomeBase, int numParticoes, const char*
 
     ParticaoInfo heap[MAX_PARTICOES];
     int tamanhoHeap = 0;
-    static int idMergeCounter = 0; // static para garantir nomes únicos entre chamadas
+    static int idMergeCounter = 0;
 
     for (int i = 0; i < numParticoes; i++) {
         char nomeParticao[256];
@@ -58,7 +57,7 @@ void intercalacaoOtimaFornec(const char* nomeBase, int numParticoes, const char*
     rename(heap[0].nomeArquivo, nomeSaidaFinal);
 }
 
-// --- Implementação das Funções Privadas ---
+
 
 static void minHeapify(ParticaoInfo arr[], int n, int i, TMetrica *metricas) {
     int menor = i;

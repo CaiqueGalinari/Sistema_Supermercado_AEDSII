@@ -347,3 +347,85 @@
 	"selecao_natural.h"
 	"intercalacao_otima.h"
 
+1753741443 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\caixa.c
+	"caixa.h"
+	<string.h>
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\caixa.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"produto.h"
+	"metricas.h"
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\produto.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fornecedor.h"
+	"metricas.h"
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\fornecedor.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"metricas.h"
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\metricas.h
+	<time.h>
+
+1753741443 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\fornecedor.c
+	"fornecedor.h"
+	<string.h>
+	<time.h>
+
+1753742281 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\intercalacao_otima.c
+	"intercalacao_otima.h"
+	"fornecedor.h"
+	<stdlib.h>
+	<string.h>
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\intercalacao_otima.h
+	<stdio.h>
+	"metricas.h"
+
+1753742363 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\main.c
+	<stdio.h>
+	<stdlib.h>
+	"mercado.h"
+	"fornecedor.h"
+	"produto.h"
+	"caixa.h"
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\mercado.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"fornecedor.h"
+	"produto.h"
+	"caixa.h"
+
+1753742132 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\mercado.c
+	"mercado.h"
+	<time.h>
+	<math.h>
+	<unistd.h>
+	"selecao_natural.h"
+	"intercalacao_otima.h"
+
+1753741443 c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\selecao_natural.h
+	<stdio.h>
+	"fornecedor.h"
+	"metricas.h"
+
+1753741443 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\produto.c
+	"produto.h"
+	<string.h>
+	<time.h>
+
+1753742133 source:c:\users\thars\desktop\sistema_supermercado_aedsii-main\programa\selecao_natural.c
+	"selecao_natural.h"
+	<stdlib.h>
+	<string.h>
+	<limits.h>
+
