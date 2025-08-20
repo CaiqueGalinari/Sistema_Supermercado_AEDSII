@@ -16,9 +16,10 @@ void embaralha(int *vet, int tam) {
     }
 }
 
-void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FILE* out_fornecedores, FILE* out_produtos, FILE* out_caixas) {
+void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FILE* out_fornecedores, FILE* out_produtos, FILE* out_caixas, FILE* out_hash) {
     srand(time(NULL));
     printf("\nGerando a base de dados...\n");
+    criaHashProd(out_hash);
 
     printf("Criando %d fornecedores...\n", num_fornecedores);
     int *fornecedor_ids = (int *) malloc(sizeof(int) * num_fornecedores);
@@ -55,7 +56,7 @@ void criarBaseMercado(int num_fornecedores, int num_produtos, int num_caixas, FI
         int estoque = rand() % 500;
         int id_fornecedor_aleatorio = fornecedor_ids[rand() % num_fornecedores];
         TProduto *p = produto(produto_ids[i], nome, descricao, preco, estoque, id_fornecedor_aleatorio);
-        salvaProd(p, out_produtos);
+        insereProdHash(p, out_produtos, out_hash); // mudado para hash
         free(p);
     }
     printf("Produtos criados.\n");
@@ -128,6 +129,7 @@ TFornecedor *buscaBinariaFornecedor(int chave, FILE *in, int inicio, int fim, lo
     return NULL;
 }
 
+/* Trocado busca binaria para busca em hash
 TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *pos_encontrada, FILE *log) {
     TProduto *p = NULL;
     int cod = -1, cont = 0;
@@ -157,6 +159,9 @@ TProduto *buscaBinariaProduto(int chave, FILE *in, int inicio, int fim, long *po
     *pos_encontrada = -1;
     return NULL;
 }
+*/
+
+
 
 TCaixa *buscaSequencialCaixa(int chave, FILE *in, long *pos_encontrada, FILE *log) {
     TCaixa *c;
@@ -220,11 +225,10 @@ void OrdenacaoEmDiscoFornec(FILE* arqEntrada, FILE* arqSaida, FILE* arqLog, int 
     }
 }
 
-void Vender(int id_caixa, int id_produto, FILE* arq_caixas, FILE* arq_produtos, FILE* log) {
+//Trocado de busca binaria para busca em hash
+void Vender(int id_caixa, int id_produto, FILE* arq_caixas, FILE* arq_produtos, FILE* arq_hash, FILE* log) {
     long pos_produto = -1;
-    fseek(arq_produtos, 0, SEEK_END);
-    int num_produtos_total = ftell(arq_produtos) / sizeof(TProduto);
-    TProduto *produto_vendido = buscaBinariaProduto(id_produto, arq_produtos, 1, num_produtos_total, &pos_produto, log);
+    TProduto *produto_vendido = buscaProdHash(id_produto, arq_produtos, arq_hash, &pos_produto);
 
     if (produto_vendido == NULL || produto_vendido->estoque <= 0) {
         printf("ERRO: Produto com ID %d nao encontrado ou sem estoque!\n", id_produto);
@@ -260,6 +264,7 @@ void Vender(int id_caixa, int id_produto, FILE* arq_caixas, FILE* arq_produtos, 
     free(caixa_venda);
 }
 
+/* Não será mais necessário
 void consultarProdutoPorId(FILE *arq_produtos, int id, FILE *log) {
     printf("\nConsultando produto com ID %d...\n", id);
     long pos = -1;
@@ -275,6 +280,7 @@ void consultarProdutoPorId(FILE *arq_produtos, int id, FILE *log) {
         fprintf(log, "\nConsulta: Produto com ID %d nao encontrado.\n", id);
     }
 }
+*/
 
 void consultarFornecedorPorId(FILE *arq_fornecedores, int id, FILE *log) {
     printf("\nConsultando fornecedor com ID %d...\n", id);
@@ -306,7 +312,7 @@ void consultarCaixaPorId(FILE *arq_caixas, int id, FILE *log) {
     }
 }
 
-void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
+void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *arq_hash, FILE *log) {
     int id_produto;
     printf("\n### ATUALIZAÇÃO DE PRODUTO ###\n");
     printf("Digite o ID do produto que deseja atualizar: ");
@@ -314,10 +320,8 @@ void atualizarProduto(FILE *arq_produtos, FILE *arq_fornecedores, FILE *log) {
     while (getchar() != '\n'); // Limpa o buffer do teclado
 
     long pos_produto = -1;
-    fseek(arq_produtos, 0, SEEK_END);
-    int num_produtos_total = ftell(arq_produtos) / sizeof(TProduto);
 
-    TProduto *p = buscaBinariaProduto(id_produto, arq_produtos, 1, num_produtos_total, &pos_produto, log);
+    TProduto *p = buscaProdHash(id_produto, arq_produtos, arq_hash, &pos_produto);
 
     if (p == NULL) {
         printf("ERRO: Produto com ID %d não encontrado.\n", id_produto);

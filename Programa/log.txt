@@ -1,7 +1,0 @@
-
---- Metricas Ordenacao (Modo Stream) ---
-Memoria (M): 1000 registros
-Particoes Geradas: 9
-Comparacoes: 9908153
-Movimentacoes: 76502
-Tempo: 0.2920 segundos
